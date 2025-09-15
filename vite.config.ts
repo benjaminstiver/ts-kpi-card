@@ -1,16 +1,17 @@
+// vite.config.ts
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  // Vercel serves at the root, so base = "/"
-  base: "/",
+  base: "/",                    // Vercel serves at the root
   build: {
-    // Make a STABLE filename so the TS URL never changes.
+    lib: {
+      entry: "src/main.ts",     // your SDK-wrapped chart code
+      name: "KpiCard",
+      formats: ["iife"],        // classic script (NOT ESM)
+      fileName: () => "kpi-card.js"
+    },
     rollupOptions: {
-      output: {
-        entryFileNames: "kpi-card.js",
-        chunkFileNames: "kpi-card-[name].js",
-        assetFileNames: "kpi-card-[name][extname]"
-      }
+      output: { inlineDynamicImports: true } // force a single file
     }
   }
 });
